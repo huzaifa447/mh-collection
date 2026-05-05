@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Populate Products</title>
+</head>
+<body>
+<h1>Demo Products Populated!</h1>
+<p>Open developer console for log.</p>
+<script>
+const demoProducts = [
+  {
+    _id: '1',
+    name: 'Daytona Chronograph Elite',
+    price: 850000,
+    images: ['slideimages/Blue and White Bold Watch Sale Facebook Shops Ad_20250904_215346_0000.png'],
+    category: 'male',
+    description: 'Swiss made luxury chronograph with exceptional craftsmanship.'
+  },
+  {
+    _id: '2',
+    name: 'Ladies Pearl Datejust',
+    price: 650000,
+    images: ['slideimages/Blue and White Bold Watch Sale Facebook Shops Ad_20250905_193113_0000.png'],
+    category: 'female',
+    description: 'Elegant ladies watch with pearl dial and diamond accents.'
+  },
+  {
+    _id: '3',
+    name: 'Couples Collection',
+    price: 1200000,
+    images: ['slideimages/Blue and White Bold Watch Sale Facebook Shops Ad_20250905_193243_0000.png'],
+    category: 'couples',
+    description: 'Matching his and hers timepieces for special occasions.'
+  },
+  {
+    _id: '4',
+    name: 'Explorer II Adventure',
+    price: 720000,
+    images: ['slideimages/Blue and White Bold Watch Sale Facebook Shops Ad_20250909_145129_0000.png'],
+    category: 'male',
+    description: 'Rugged GMT watch for adventurers and explorers.'
+  },
+  {
+    _id: '5',
+    name: 'Submariner Diver Pro',
+    price: 950000,
+    images: ['slideimages/Blue and White Bold Watch Sale Facebook Shops Ad_20250904_215346_0000.png'],
+    category: 'male',
+    description: 'Professional dive watch with 300m water resistance.'
+  }
+];
+
+localStorage.setItem('mh_products', JSON.stringify(demoProducts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))));
+console.log('✅ 5 demo products added to localStorage "mh_products"');
+console.log('Open your app /shop to see products!');
+console.log(demoProducts);
+</script>
+</body>
+</html>
+

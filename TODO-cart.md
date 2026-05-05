@@ -1,0 +1,1 @@
+- [x] Step 1: Edit src/pages/Cart.tsx subtotal/total to PKR

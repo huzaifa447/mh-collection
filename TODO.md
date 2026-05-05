@@ -1,0 +1,1 @@
+- [x] Step 1: Edit src/pages/Checkout.tsx to replace "$" with "PKR " and standardize formatting
