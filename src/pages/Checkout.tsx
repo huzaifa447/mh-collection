@@ -21,13 +21,30 @@ interface OrderItem {
   quantity: number
 }
 
+interface User {
+  _id?: string
+  id?: string
+  name: string
+  email: string
+  phone?: string
+  address?: string
+  city?: string
+  postalCode?: string
+}
+
 interface Order {
   _id: string
   items: OrderItem[]
   totalAmount: number
   status: 'pending' | 'shipped' | 'delivered'
   createdAt: string
-  shippingInfo: FormData
+  fullName: string
+  phone: string
+  address: string
+  city: string
+  postalCode: string
+  userId: string
+  userEmail: string
 }
 
 const Checkout = () => {
@@ -65,7 +82,6 @@ const Checkout = () => {
 
     setLoading(true)
     try {
-// Create order object with customer info at root level (matching AdminPanel expectation)
       const newOrder: Order = {
         _id: Date.now().toString(),
         items: items.map(item => ({
@@ -77,29 +93,23 @@ const Checkout = () => {
         totalAmount: totalPrice,
         status: 'pending',
         createdAt: new Date().toISOString(),
-        // Store customer info at root level (not nested) for AdminPanel compatibility
         fullName: formData.fullName,
         phone: formData.phone,
         address: formData.address,
         city: formData.city,
         postalCode: formData.postalCode,
-        // Store user ID and email for tracking which customer placed the order
-        userId: user?._id || user?.id || '',
+        userId: user?._id || '',
         userEmail: user?.email || ''
       }
 
-// Get existing orders from localStorage (use 'mh_orders' for AdminPanel compatibility)
       const existingOrders = JSON.parse(localStorage.getItem('mh_orders') || '[]')
-      
-      // Add new order
       const updatedOrders = [newOrder, ...existingOrders]
       localStorage.setItem('mh_orders', JSON.stringify(updatedOrders))
-      
-      // Also save to 'orders' key so UserProfile can display them with status updates
+
       const userOrders = JSON.parse(localStorage.getItem('orders') || '[]')
       const updatedUserOrders = [newOrder, ...userOrders]
       localStorage.setItem('orders', JSON.stringify(updatedUserOrders))
-      
+
       clearCart()
       toast.success('Order placed successfully!')
       navigate('/profile')
@@ -146,7 +156,6 @@ const Checkout = () => {
           <h1 className="font-heading text-4xl text-accent-white mb-8">Checkout</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Order Form */}
             <div className="lg:col-span-2">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="p-6 bg-primary-light border border-white/5">
@@ -221,7 +230,6 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* Payment Security */}
                 <div className="p-4 bg-primary-light border border-white/5 flex items-center gap-4">
                   <Lock className="w-5 h-5 text-accent-silver" />
                   <div>
@@ -232,7 +240,6 @@ const Checkout = () => {
               </form>
             </div>
 
-            {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 p-6 bg-primary-light border border-white/5">
                 <h3 className="font-heading text-xl text-accent-white mb-6">Order Summary</h3>
@@ -244,7 +251,7 @@ const Checkout = () => {
                         <p className="font-body text-sm text-accent-white">{item.name}</p>
                         <p className="font-body text-xs text-accent-silver/60">Qty: {item.quantity}</p>
                       </div>
-PKR {(item.price * item.quantity).toLocaleString('en-PK')}
+                      <span>PKR {(item.price * item.quantity).toLocaleString('en-PK')}</span>
                     </div>
                   ))}
                 </div>
@@ -252,7 +259,7 @@ PKR {(item.price * item.quantity).toLocaleString('en-PK')}
                 <div className="border-t border-white/10 pt-4 space-y-4">
                   <div className="flex justify-between">
                     <span className="font-body text-accent-silver/60">Subtotal</span>
-<span className="font-body text-accent-white">PKR {totalPrice.toLocaleString('en-PK')}</span>
+                    <span className="font-body text-accent-white">PKR {totalPrice.toLocaleString('en-PK')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-body text-accent-silver/60">Shipping</span>
@@ -267,7 +274,7 @@ PKR {(item.price * item.quantity).toLocaleString('en-PK')}
                 <div className="border-t border-white/10 pt-4 mt-4">
                   <div className="flex justify-between mb-6">
                     <span className="font-heading text-lg text-accent-white">Total</span>
-<span className="price-tag text-xl">PKR {totalPrice.toLocaleString('en-PK')}</span>
+                    <span className="price-tag text-xl">PKR {totalPrice.toLocaleString('en-PK')}</span>
                   </div>
 
                   <button
@@ -295,3 +302,4 @@ PKR {(item.price * item.quantity).toLocaleString('en-PK')}
 }
 
 export default Checkout
+
